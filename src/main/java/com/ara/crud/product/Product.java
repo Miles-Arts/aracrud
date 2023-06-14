@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.context.annotation.Primary;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 
 @Entity
@@ -20,6 +21,7 @@ public class Product {
 
     private LocalDate fecha;
 
+    @Transient
     private int antiguedad;
 
 
@@ -27,20 +29,20 @@ public class Product {
     }
 
     //Contructores sobre cargados
-    public Product(Long id, String name, float price, LocalDate fecha, int antiguedad) {
+    public Product(Long id, String name, float price, LocalDate fecha /*, int antiguedad*/) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.fecha = fecha;
-        this.antiguedad = antiguedad;
+        //this.antiguedad = antiguedad;
     }
 
     //Constructor sin ID
-    public Product(String name, float price, LocalDate fecha, int antiguedad) {
+    public Product(String name, float price, LocalDate fecha  /*, int antiguedad*/) {
         this.name = name;
         this.price = price;
         this.fecha = fecha;
-        this.antiguedad = antiguedad;
+        //this.antiguedad = antiguedad;
     }
 
     public Long getId() {
@@ -76,7 +78,7 @@ public class Product {
     }
 
     public int getAntiguedad() {
-        return antiguedad;
+        return Period.between(this.fecha, LocalDate.now()).getYears();
     }
 
     public void setAntiguedad(int antiguedad) {
