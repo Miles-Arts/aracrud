@@ -1,9 +1,17 @@
 package com.ara.crud.product;
 
+import jakarta.persistence.*;
+import org.springframework.context.annotation.Primary;
+
 import java.time.LocalDate;
 
+
+@Entity
+@Table
 public class Product {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -16,6 +24,23 @@ public class Product {
 
 
     public Product() {
+    }
+
+    //Contructores sobre cargados
+    public Product(Long id, String name, float price, LocalDate fecha, int antiguedad) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.fecha = fecha;
+        this.antiguedad = antiguedad;
+    }
+
+    //Constructor sin ID
+    public Product(String name, float price, LocalDate fecha, int antiguedad) {
+        this.name = name;
+        this.price = price;
+        this.fecha = fecha;
+        this.antiguedad = antiguedad;
     }
 
     public Long getId() {
