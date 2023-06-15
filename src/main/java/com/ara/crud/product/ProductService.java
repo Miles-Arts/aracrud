@@ -54,8 +54,9 @@ public class ProductService {
 //            throw new IllegalStateException("Ya existe el producto");
         }
         productRepository.save(product);
-        datosObjeto.put("Datos", datosObjeto);
-        datosObjeto.put("Producto Nuevo", "datosObjeto");
+        //
+        datosObjeto.put("Datos Producto", product);
+        datosObjeto.put("Mensaje", "Se guardó con éxito el producto");
         return new ResponseEntity<>(
                 datosObjeto,
 //                product,
