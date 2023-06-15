@@ -17,6 +17,9 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
+   /* HashMap<String, Object> datosObjeto = new HashMap<>();*/
+   HashMap<String, Object> datosObjeto;
+
     //@GetMapping//(path = "/")
     @Autowired
     public ProductService(ProductRepository productRepository){
@@ -40,8 +43,7 @@ public class ProductService {
 
     public ResponseEntity<Object> newProduct(Product product) {
         Optional<Product> respuesta = productRepository.findProductByName(product.getName());
-        HashMap<String, Object> datosObjeto = new HashMap<>();
-
+            datosObjeto = new HashMap<>();
 
         if(respuesta.isPresent() && product.getId() == null) {
             datosObjeto.put("Error", true);
@@ -49,7 +51,6 @@ public class ProductService {
             return new ResponseEntity<>(
                     datosObjeto,
                     HttpStatus.CONFLICT
-
             );
 //            throw new IllegalStateException("Ya existe el producto");
         }
@@ -59,12 +60,32 @@ public class ProductService {
             datosObjeto.put("Mensaje", "Se actualizó con éxito el producto");
         }
         productRepository.save(product);
-
         datosObjeto.put("Datos Producto", product);
         return new ResponseEntity<>(
                 datosObjeto,
 //                product,
                 HttpStatus.CREATED
+        );
+    }
+
+    public ResponseEntity<Object> deleteProduct(Long id) {
+        datosObjeto = new HashMap<>();
+        boolean existeProduct = this.productRepository.existsById(id);
+        datosObjeto = new HashMap<>();
+        if(!existeProduct) {
+            datosObjeto.put("Error", true);
+            datosObjeto.put("No existe un producto con ese", " ID");
+            return new ResponseEntity<>(
+                    datosObjeto,
+                    HttpStatus.CONFLICT
+            );
+        }
+        productRepository.deleteById(id);
+  /*      datosObjeto.put("Data", product);*/
+        datosObjeto.put("Se eliminó el producto con ese", "ID");
+        return new ResponseEntity<>(
+                datosObjeto,
+                HttpStatus.ACCEPTED
         );
     }
 }
