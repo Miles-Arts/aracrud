@@ -26,6 +26,13 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Object> registrarProduct(@RequestBody Product product) {
         return this.productService.newProduct(product);
+
+    }
+
+    @PutMapping
+    public ResponseEntity<Object> actualizarProduct(@RequestBody Product product) {
+
+        return this.productService.newProduct(product);
     }
 
 }

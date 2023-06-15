@@ -43,7 +43,7 @@ public class ProductService {
         HashMap<String, Object> datosObjeto = new HashMap<>();
 
 
-        if(respuesta.isPresent()) {
+        if(respuesta.isPresent() && product.getId() == null) {
             datosObjeto.put("Error", true);
             datosObjeto.put("Ya existe un producto con ese", " Nombre");
             return new ResponseEntity<>(
@@ -53,15 +53,18 @@ public class ProductService {
             );
 //            throw new IllegalStateException("Ya existe el producto");
         }
-        productRepository.save(product);
-        //
-        datosObjeto.put("Datos Producto", product);
+
         datosObjeto.put("Mensaje", "Se guardó con éxito el producto");
+        if(product.getId() != null) {
+            datosObjeto.put("Mensaje", "Se actualizó con éxito el producto");
+        }
+        productRepository.save(product);
+
+        datosObjeto.put("Datos Producto", product);
         return new ResponseEntity<>(
                 datosObjeto,
 //                product,
                 HttpStatus.CREATED
-
         );
     }
 }
