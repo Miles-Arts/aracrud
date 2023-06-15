@@ -1,12 +1,16 @@
 package com.ara.crud.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -34,4 +38,30 @@ public class ProductService {
 //                ));
     }
 
+    public ResponseEntity<Object> newProduct(Product product) {
+        Optional<Product> respuesta = productRepository.findProductByName(product.getName());
+        HashMap<String, Object> datosObjeto = new HashMap<>();
+
+
+        if(respuesta.isPresent()) {
+            datosObjeto.put("Error", true);
+            datosObjeto.put("Ya existe un producto con ese", " Nombre");
+            return new ResponseEntity<>(
+                    datosObjeto,
+                    HttpStatus.CONFLICT
+
+            );
+//            throw new IllegalStateException("Ya existe el producto");
+        }
+        productRepository.save(product);
+        datosObjeto.put("Datos", datosObjeto);
+        datosObjeto.put("Producto Nuevo", "datosObjeto");
+        return new ResponseEntity<>(
+                datosObjeto,
+//                product,
+                HttpStatus.CREATED
+
+        );
+    }
 }
+
